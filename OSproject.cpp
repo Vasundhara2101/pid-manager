@@ -5,14 +5,14 @@
 #define MINPID 100
 #define MAXPID 1000
 
-int value = 0;
-pthread_mutex_t mutex;
-
 struct pid
 {
     int pid1;
     bool bitmap;
 }obj[1000];
+
+int value = 0;
+pthread_mutex_t mutex;
 
 int allocate_map(void)    //function to initialise data structure for representing pids              
 {
