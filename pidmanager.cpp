@@ -42,4 +42,35 @@ int allocate_pid(void) //function to allocate pid
 
     return -1;
 }
+void release_pid(int pid1)  //function to release pid
+{
+    for(int i = 0; i <= 100; i++)
+    {
+        if(obj[i].pid1 == pid1)
+        {
+            obj[i].bitmap = 0;
+        }
+    }
+}
+
+void * callthread(void* )                         
+{
+    int x = allocate_pid();       
+    while (value < 100)
+    {
+        pthread_mutex_lock(&mutex);     
+        if (value >= 100)
+        {
+            pthread_mutex_unlock(&mutex);
+            break;
+        }
+        value++;                    
+        Sleep(100);
+        printf("\n Process %d pid: %d",value);
+        printf("\n ",obj[value].pid1);
+        pthread_mutex_unlock(&mutex); 
+    }
+    Sleep(500);
+    release_pid(x); //pid released
+}
 
