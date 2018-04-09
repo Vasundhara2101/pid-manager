@@ -1,32 +1,45 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
-int MAXPID=1000
-int MINPID=100
-int PID_RANGE=5000;
-int pid_map[5000]
-int allocate_map()
+#define MINPID 100
+#define MAXPID 1000
+
+int value = 0;
+pthread_mutex_t mutex;
+
+struct pid
 {
-	for(int i=0;i<MAXPID; i++)
-	{
-		pid_map[i]=0;
-	}
-	return 1;
-	
-}
-int allocate_pid()
+    int pid1;
+    bool bitmap;
+}obj[1000];
+
+int allocate_map(void)    //function to initialise data structure for representing pids              
 {
-	for(int i=0; i<MAXPID; i++)
-	{
-		if(pid_map[i]==0)
-		{
-			pid_map[i]=1;
-			return i+MINPID;
-		}
-	}
-	return 1;
+    int i,j;
+    for(i = MINPID, j =0; i <= MAXPID; i++, j++)
+    {
+        obj[j].pid1 = i;
+        obj[j].bitmap = 0;
+    }
+    if(i == MAXPID && j == 1000)
+    return 1;
+    else
+    return -1;
 }
-void release_pid(int pid)
+
+int allocate_pid(void) //function to allocate pid
 {
-	pid_map[MINPID+pid]=0;
+    for(int i = MINPID, j =0; i <= MAXPID; i++, j++)
+    {
+        if(obj[j].bitmap == 0)
+        {
+            obj[j].pid1 = i;
+            obj[j].bitmap = 1;
+            return i;
+            break;
+        }
+    }
+
+    return -1;
 }
+
